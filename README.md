@@ -24,7 +24,7 @@ Load the library:
 
 ```lua
 local gui = loadstring(game:HttpGet(
-	"https://raw.githubusercontent.com/wrestlemantuck/OpScriptsGUITEMP/main/main.luau?nocache=" .. tick()
+	"https://raw.githubusercontent.com/scripter1321/opscriptsgui/main/main.luau?nocache=" .. tick()
 ))()
 ```
 
@@ -119,7 +119,7 @@ true / false
 
 ```lua
 local gui = loadstring(game:HttpGet(
-	"https://raw.githubusercontent.com/wrestlemantuck/OpScriptsGUITEMP/main/main.luau?nocache=" .. tick()
+	"https://raw.githubusercontent.com/scripter1321/opscriptsgui/main/main.luau?nocache=" .. tick()
 ))()
 
 gui.CreateTitle("Test")
@@ -181,7 +181,7 @@ Recommended loadstring:
 
 ```lua
 local gui = loadstring(game:HttpGet(
-	"https://raw.githubusercontent.com/wrestlemantuck/OpScriptsGUITEMP/main/main.luau?nocache=" .. tick()
+	"https://raw.githubusercontent.com/scripter1321/opscriptsgui/main/main.luau?nocache=" .. tick()
 ))()
 ```
 # Known issues:
