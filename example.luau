@@ -17,3 +17,6 @@ end)
 gui.CreateButton("Other Tab Button", "Other", function()
 	print("other tab button pressed")
 end)
+gui.CreateButton("Invalid Tab Button", "Invalid Tab", function() -- this is a fallback example. it will automattically make any tabs that arent made yet but are requested.
+	print("Invalid Tab Button Pressed")
+end)
