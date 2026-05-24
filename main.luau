@@ -4,8 +4,28 @@ local UIS = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
 
+local rng = Random.new(os.clock() * 1e6)
+
+local chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+local charCount = #chars
+
+local function randomString(length)
+	local result = table.create(length)
+
+	for i = 1, length do
+		local index = rng:NextInteger(1, charCount)
+		result[i] = string.byte(chars, index)
+	end
+
+	for i = 1, length do
+		result[i] = string.char(result[i])
+	end
+
+	return table.concat(result)
+end
+
 local gui = Instance.new("ScreenGui")
-gui.Name = "OpScriptsGUI"
+gui.Name = randomString(13)
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
