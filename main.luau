@@ -3,70 +3,12 @@ local TweenService = game:GetService("TweenService")
 local UIS = game:GetService("UserInputService")
 
 local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
-
-local LoadingGui = Instance.new("ScreenGui")
-LoadingGui.Name = "LoadingGUI"
-LoadingGui.ResetOnSpawn = false
-LoadingGui.Parent = PlayerGui
-
-local LoadingFrame = Instance.new("Frame")
-LoadingFrame.Size = UDim2.new(0, 420, 0, 160)
-LoadingFrame.Position = UDim2.new(0.5, -210, 0.5, -80)
-LoadingFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-LoadingFrame.BorderSizePixel = 0
-LoadingFrame.Parent = LoadingGui
-
-Instance.new("UICorner", LoadingFrame).CornerRadius = UDim.new(0, 18)
-
-local LoadingStroke = Instance.new("UIStroke")
-LoadingStroke.Color = Color3.fromRGB(45, 45, 45)
-LoadingStroke.Thickness = 1.5
-LoadingStroke.Parent = LoadingFrame
-
-local LoadingText = Instance.new("TextLabel")
-LoadingText.Size = UDim2.new(1, 0, 1, 0)
-LoadingText.BackgroundTransparency = 1
-LoadingText.Font = Enum.Font.GothamBold
-LoadingText.TextSize = 18
-LoadingText.TextColor3 = Color3.new(1, 1, 1)
-LoadingText.Text = "Loading"
-LoadingText.Parent = LoadingFrame
-
-local running = true
-
-task.spawn(function()
-	local dots = {"", ".", "..", "..."}
-	local i = 1
-	while running do
-		LoadingText.Text = "Loading" .. dots[i]
-		i += 1
-		if i > #dots then
-			i = 1
-		end
-		task.wait(0.5)
-	end
-end)
-
-task.wait(3.5)
-
-running = false
-
-local fadeInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-TweenService:Create(LoadingFrame, fadeInfo, {BackgroundTransparency = 1}):Play()
-TweenService:Create(LoadingText, fadeInfo, {TextTransparency = 1}):Play()
-TweenService:Create(LoadingStroke, fadeInfo, {Transparency = 1}):Play()
-
-task.wait(0.65)
-
-LoadingGui:Destroy()
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "OpScriptsGUI"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-gui.Parent = PlayerGui
+gui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local Main = Instance.new("Frame")
 Main.Size = UDim2.new(0, 520, 0, 340)
@@ -152,8 +94,8 @@ Content.Position = UDim2.new(0,140,0,48)
 Content.BackgroundTransparency = 1
 Content.Parent = Main
 
-local function CreateTitle(text)
-	Title.Text = text
+local function CreateTitle(Text)
+	Title.Text = Text
 end
 
 local function CreateTab(Name)
@@ -228,11 +170,15 @@ local function CreateButton(BtnName, Tab, Callback)
 	Stroke.Parent = Button
 
 	Button.MouseEnter:Connect(function()
-		TweenService:Create(Button, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(35,35,35)}):Play()
+		TweenService:Create(Button, TweenInfo.new(0.15), {
+			BackgroundColor3 = Color3.fromRGB(35,35,35)
+		}):Play()
 	end)
 
 	Button.MouseLeave:Connect(function()
-		TweenService:Create(Button, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(28,28,28)}):Play()
+		TweenService:Create(Button, TweenInfo.new(0.15), {
+			BackgroundColor3 = Color3.fromRGB(28,28,28)
+		}):Play()
 	end)
 
 	if Callback then
@@ -243,8 +189,9 @@ local function CreateButton(BtnName, Tab, Callback)
 end
 
 local function CreateToggle(Name, Tab, Callback)
-	local Enabled = false
 	local Page = Tabs[Tab]
+
+	local Enabled = false
 
 	local ToggleFrame = Instance.new("Frame")
 	ToggleFrame.Size = UDim2.new(0,280,0,60)
@@ -253,10 +200,6 @@ local function CreateToggle(Name, Tab, Callback)
 	ToggleFrame.Parent = Page
 
 	Instance.new("UICorner", ToggleFrame).CornerRadius = UDim.new(0,14)
-
-	local ToggleStroke = Instance.new("UIStroke")
-	ToggleStroke.Color = Color3.fromRGB(45,45,45)
-	ToggleStroke.Parent = ToggleFrame
 
 	local ToggleText = Instance.new("TextLabel")
 	ToggleText.Size = UDim2.new(0.7,0,1,0)
@@ -273,7 +216,6 @@ local function CreateToggle(Name, Tab, Callback)
 	ToggleButton.Size = UDim2.new(0,70,0,32)
 	ToggleButton.Position = UDim2.new(1,-85,0.5,-16)
 	ToggleButton.BackgroundColor3 = Color3.fromRGB(45,45,45)
-	ToggleButton.BorderSizePixel = 0
 	ToggleButton.Text = "OFF"
 	ToggleButton.Font = Enum.Font.GothamBold
 	ToggleButton.TextSize = 14
@@ -292,13 +234,13 @@ local function CreateToggle(Name, Tab, Callback)
 		end
 	end
 
-	local function Get()
+	local function GetToggle()
 		return Enabled
 	end
 
-	Toggles[Name] = function(v)
-		if v ~= nil then
-			Enabled = v
+	Toggles[Name] = function(Value)
+		if Value ~= nil then
+			Enabled = Value
 			Update()
 		end
 		return Enabled
@@ -307,9 +249,12 @@ local function CreateToggle(Name, Tab, Callback)
 	ToggleButton.MouseButton1Click:Connect(function()
 		Enabled = not Enabled
 		Update()
+
 		if Enabled and Callback then
 			task.spawn(function()
-				Callback(Get)
+				Callback(function()
+					return Enabled
+				end)
 			end)
 		end
 	end)
@@ -318,9 +263,9 @@ local function CreateToggle(Name, Tab, Callback)
 
 	return {
 		Button = ToggleButton,
-		Get = Get,
-		Set = function(v)
-			Enabled = v
+		Get = GetToggle,
+		Set = function(Value)
+			Enabled = Value
 			Update()
 		end
 	}
@@ -331,6 +276,53 @@ local function GetToggle(Name)
 		return Toggles[Name]()
 	end
 	return false
+end
+
+local function Loading()
+	local Players = game:GetService("Players")
+	local LocalPlayer = Players.LocalPlayer
+
+	local LoadingGui = Instance.new("ScreenGui")
+	LoadingGui.Name = "LoadingGUI"
+	LoadingGui.ResetOnSpawn = false
+	LoadingGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+	local LoadingFrame = Instance.new("Frame")
+	LoadingFrame.Size = UDim2.new(0, 420, 0, 160)
+	LoadingFrame.Position = UDim2.new(0.5, -210, 0.5, -80)
+	LoadingFrame.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
+	LoadingFrame.BorderSizePixel = 0
+	LoadingFrame.Parent = LoadingGui
+
+	Instance.new("UICorner", LoadingFrame).CornerRadius = UDim.new(0, 18)
+
+	local Stroke = Instance.new("UIStroke")
+	Stroke.Color = Color3.fromRGB(45, 45, 45)
+	Stroke.Thickness = 1.5
+	Stroke.Parent = LoadingFrame
+
+	local Text = Instance.new("TextLabel")
+	Text.Size = UDim2.new(1, 0, 1, 0)
+	Text.BackgroundTransparency = 1
+	Text.Font = Enum.Font.GothamBold
+	Text.TextSize = 18
+	Text.TextColor3 = Color3.new(1, 1, 1)
+	Text.Parent = LoadingFrame
+
+	local Steps = {
+		"Loading.",
+		"Loading..",
+		"Loading...",
+		"Loaded!"
+	}
+
+	for i = 1, #Steps do
+		Text.Text = Steps[i]
+		task.wait(0.8)
+	end
+
+	task.wait(0.3)
+	LoadingGui:Destroy()
 end
 
 local MainTab = CreateTab("Main")
@@ -346,11 +338,6 @@ Topbar.InputBegan:Connect(function(input)
 		dragging = true
 		dragStart = input.Position
 		startPos = Main.Position
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
 	end
 end)
 
@@ -372,57 +359,11 @@ UIS.InputChanged:Connect(function(input)
 	end
 end)
 
-local Resize = Instance.new("Frame")
-Resize.Size = UDim2.new(0,18,0,18)
-Resize.Position = UDim2.new(1,-18,1,-18)
-Resize.BackgroundColor3 = Color3.fromRGB(40,40,40)
-Resize.BorderSizePixel = 0
-Resize.Parent = Main
-
-Instance.new("UICorner", Resize).CornerRadius = UDim.new(1,0)
-
-local resizing = false
-local resizeStart
-local startSize
-
-Resize.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		resizing = true
-		resizeStart = input.Position
-		startSize = Main.Size
-	end
-end)
-
-UIS.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		resizing = false
-	end
-end)
-
-UIS.InputChanged:Connect(function(input)
-	if resizing and input.UserInputType == Enum.UserInputType.MouseMovement then
-		local delta = input.Position - resizeStart
-		Main.Size = UDim2.new(
-			startSize.X.Scale,
-			math.max(350, startSize.X.Offset + delta.X),
-			startSize.Y.Scale,
-			math.max(250, startSize.Y.Offset + delta.Y)
-		)
-	end
-end)
-
-Main.Size = UDim2.new(0,0,0,0)
-
-TweenService:Create(
-	Main,
-	TweenInfo.new(0.25, Enum.EasingStyle.Quart),
-	{Size = UDim2.new(0,520,0,340)}
-):Play()
-
 return {
 	CreateTitle = CreateTitle,
 	CreateTab = CreateTab,
 	CreateButton = CreateButton,
 	CreateToggle = CreateToggle,
-	GetToggle = GetToggle
+	GetToggle = GetToggle,
+	Loading = Loading
 }
