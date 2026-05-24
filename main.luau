@@ -13,33 +13,25 @@ local textprimary = Color3.new(1, 1, 1)
 local textsecondary = Color3.fromRGB(120, 120, 135)
 
 local rng = Random.new(os.clock() * 1e6)
-
 local chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-local charCount = #chars
+local charcount = #chars
 
-local function randomString(length)
+local function randomstring(length)
 	local result = table.create(length)
-
 	for i = 1, length do
-		local index = rng:NextInteger(1, charCount)
-		result[i] = string.byte(chars, index)
+		result[i] = string.char(string.byte(chars, rng:NextInteger(1, charcount)))
 	end
-
-	for i = 1, length do
-		result[i] = string.char(result[i])
-	end
-
 	return table.concat(result)
 end
 
 local gui = Instance.new("ScreenGui")
-gui.Name = randomString(13)
+gui.Name = randomstring(13)
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = localplayer:WaitForChild("PlayerGui")
 
 local main = Instance.new("Frame")
-main.Name = randomString(13)
+main.Name = randomstring(13)
 main.Size = UDim2.new(0, 540, 0, 360)
 main.Position = UDim2.new(0.5, -270, 0.5, -180)
 main.BackgroundColor3 = bg
@@ -50,13 +42,12 @@ main.Parent = gui
 Instance.new("UICorner", main).CornerRadius = UDim.new(0, 16)
 
 local mainstroke = Instance.new("UIStroke")
-mainstroke.Name = randomString(13)
 mainstroke.Color = border
 mainstroke.Thickness = 1
 mainstroke.Parent = main
 
 local topbar = Instance.new("Frame")
-topbar.Name = randomString(13)
+topbar.Name = randomstring(13)
 topbar.Size = UDim2.new(1, 0, 0, 52)
 topbar.BackgroundColor3 = surface
 topbar.BorderSizePixel = 0
@@ -65,7 +56,6 @@ topbar.Parent = main
 Instance.new("UICorner", topbar).CornerRadius = UDim.new(0, 16)
 
 local topbarfix = Instance.new("Frame")
-topbarfix.Name = randomString(13)
 topbarfix.Size = UDim2.new(1, 0, 0, 16)
 topbarfix.Position = UDim2.new(0, 0, 1, -16)
 topbarfix.BackgroundColor3 = surface
@@ -73,7 +63,6 @@ topbarfix.BorderSizePixel = 0
 topbarfix.Parent = topbar
 
 local topbarbottomborder = Instance.new("Frame")
-topbarbottomborder.Name = randomString(13)
 topbarbottomborder.Size = UDim2.new(1, 0, 0, 1)
 topbarbottomborder.Position = UDim2.new(0, 0, 1, -1)
 topbarbottomborder.BackgroundColor3 = border
@@ -81,7 +70,6 @@ topbarbottomborder.BorderSizePixel = 0
 topbarbottomborder.Parent = topbar
 
 local titledot = Instance.new("Frame")
-titledot.Name = randomString(13)
 titledot.Size = UDim2.new(0, 6, 0, 6)
 titledot.Position = UDim2.new(0, 18, 0.5, -3)
 titledot.BackgroundColor3 = accent
@@ -90,7 +78,6 @@ titledot.Parent = topbar
 Instance.new("UICorner", titledot).CornerRadius = UDim.new(1, 0)
 
 local title = Instance.new("TextLabel")
-title.Name = randomString(13)
 title.BackgroundTransparency = 1
 title.Size = UDim2.new(1, -90, 1, 0)
 title.Position = UDim2.new(0, 32, 0, 0)
@@ -107,7 +94,6 @@ local firsttab = nil
 local activetabfn = nil
 
 local closebtn = Instance.new("TextButton")
-closebtn.Name = randomString(13)
 closebtn.Size = UDim2.new(0, 28, 0, 28)
 closebtn.Position = UDim2.new(1, -44, 0.5, -14)
 closebtn.BackgroundColor3 = Color3.fromRGB(36, 36, 42)
@@ -117,7 +103,6 @@ closebtn.Parent = topbar
 Instance.new("UICorner", closebtn).CornerRadius = UDim.new(1, 0)
 
 local xl1 = Instance.new("Frame")
-xl1.Name = randomString(13)
 xl1.Size = UDim2.new(0, 11, 0, 1.5)
 xl1.Position = UDim2.new(0.5, -5.5, 0.5, -0.75)
 xl1.BackgroundColor3 = textsecondary
@@ -126,7 +111,6 @@ xl1.Rotation = 45
 xl1.Parent = closebtn
 
 local xl2 = Instance.new("Frame")
-xl2.Name = randomString(13)
 xl2.Size = UDim2.new(0, 11, 0, 1.5)
 xl2.Position = UDim2.new(0.5, -5.5, 0.5, -0.75)
 xl2.BackgroundColor3 = textsecondary
@@ -152,7 +136,7 @@ closebtn.MouseButton1Click:Connect(function()
 end)
 
 local sidebar = Instance.new("Frame")
-sidebar.Name = randomString(13)
+sidebar.Name = randomstring(13)
 sidebar.Size = UDim2.new(0, 148, 1, -52)
 sidebar.Position = UDim2.new(0, 0, 0, 52)
 sidebar.BackgroundColor3 = surface
@@ -160,48 +144,50 @@ sidebar.BorderSizePixel = 0
 sidebar.Parent = main
 
 local sideborder = Instance.new("Frame")
-sideborder.Name = randomString(13)
-sideborder.Size = UDim2.new(0, 1, 1, 0)
-sideborder.Position = UDim2.new(1, -1, 0, 0)
+sideborder.Size = UDim2.new(0, 1, 1, -52)
+sideborder.Position = UDim2.new(0, 147, 0, 52)
 sideborder.BackgroundColor3 = border
 sideborder.BorderSizePixel = 0
-sideborder.Parent = sidebar
+sideborder.Parent = main
 
 local sidelayout = Instance.new("UIListLayout")
-sidelayout.Name = randomString(13)
 sidelayout.Padding = UDim.new(0, 4)
+sidelayout.SortOrder = Enum.SortOrder.LayoutOrder
 sidelayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 sidelayout.Parent = sidebar
 
 local sidepadding = Instance.new("UIPadding")
-sidepadding.Name = randomString(13)
 sidepadding.PaddingTop = UDim.new(0, 14)
 sidepadding.Parent = sidebar
 
 local content = Instance.new("Frame")
-content.Name = randomString(13)
+content.Name = randomstring(13)
 content.Size = UDim2.new(1, -148, 1, -52)
 content.Position = UDim2.new(0, 148, 0, 52)
 content.BackgroundTransparency = 1
 content.Parent = main
+
+local tabcount = 0
 
 local function settitle(text)
 	title.Text = text
 end
 
 local function createtab(name)
+	tabcount += 1
+
 	local btn = Instance.new("TextButton")
-	btn.Name = randomString(13)
+	btn.Name = randomstring(13)
 	btn.Size = UDim2.new(0, 128, 0, 38)
 	btn.BackgroundColor3 = raised
 	btn.BackgroundTransparency = 1
 	btn.BorderSizePixel = 0
 	btn.Text = ""
+	btn.LayoutOrder = tabcount
 	btn.Parent = sidebar
 	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
 
 	local indicator = Instance.new("Frame")
-	indicator.Name = randomString(13)
 	indicator.Size = UDim2.new(0, 3, 0.5, 0)
 	indicator.Position = UDim2.new(0, 0, 0.25, 0)
 	indicator.BackgroundColor3 = accent
@@ -211,7 +197,6 @@ local function createtab(name)
 	Instance.new("UICorner", indicator).CornerRadius = UDim.new(1, 0)
 
 	local btnlabel = Instance.new("TextLabel")
-	btnlabel.Name = randomString(13)
 	btnlabel.Size = UDim2.new(1, -14, 1, 0)
 	btnlabel.Position = UDim2.new(0, 14, 0, 0)
 	btnlabel.BackgroundTransparency = 1
@@ -223,7 +208,7 @@ local function createtab(name)
 	btnlabel.Parent = btn
 
 	local page = Instance.new("ScrollingFrame")
-	page.Name = randomString(13)
+	page.Name = randomstring(13)
 	page.Size = UDim2.new(1, 0, 1, 0)
 	page.CanvasSize = UDim2.new(0, 0, 0, 0)
 	page.ScrollBarThickness = 3
@@ -233,13 +218,11 @@ local function createtab(name)
 	page.Parent = content
 
 	local layout = Instance.new("UIListLayout")
-	layout.Name = randomString(13)
 	layout.Padding = UDim.new(0, 10)
 	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	layout.Parent = page
 
 	local pagepadding = Instance.new("UIPadding")
-	pagepadding.Name = randomString(13)
 	pagepadding.PaddingTop = UDim.new(0, 18)
 	pagepadding.Parent = page
 
@@ -300,7 +283,7 @@ local function createbutton(btnname, tab, callback)
 	if not page then page = createtab(tab) end
 
 	local wrap = Instance.new("Frame")
-	wrap.Name = randomString(13)
+	wrap.Name = randomstring(13)
 	wrap.Size = UDim2.new(0, 300, 0, 48)
 	wrap.BackgroundColor3 = raised
 	wrap.BorderSizePixel = 0
@@ -308,13 +291,11 @@ local function createbutton(btnname, tab, callback)
 	Instance.new("UICorner", wrap).CornerRadius = UDim.new(0, 10)
 
 	local wrapstroke = Instance.new("UIStroke")
-	wrapstroke.Name = randomString(13)
 	wrapstroke.Color = border
 	wrapstroke.Thickness = 1
 	wrapstroke.Parent = wrap
 
 	local leftbar = Instance.new("Frame")
-	leftbar.Name = randomString(13)
 	leftbar.Size = UDim2.new(0, 3, 0.5, 0)
 	leftbar.Position = UDim2.new(0, 0, 0.25, 0)
 	leftbar.BackgroundColor3 = accent
@@ -324,7 +305,7 @@ local function createbutton(btnname, tab, callback)
 	Instance.new("UICorner", leftbar).CornerRadius = UDim.new(1, 0)
 
 	local btn = Instance.new("TextButton")
-	btn.Name = randomString(13)
+	btn.Name = randomstring(13)
 	btn.Size = UDim2.new(1, 0, 1, 0)
 	btn.BackgroundTransparency = 1
 	btn.Text = btnname
@@ -360,7 +341,7 @@ local function createtoggle(name, tab, callback)
 	local enabled = false
 
 	local wrap = Instance.new("Frame")
-	wrap.Name = randomString(13)
+	wrap.Name = randomstring(13)
 	wrap.Size = UDim2.new(0, 300, 0, 56)
 	wrap.BackgroundColor3 = raised
 	wrap.BorderSizePixel = 0
@@ -368,13 +349,11 @@ local function createtoggle(name, tab, callback)
 	Instance.new("UICorner", wrap).CornerRadius = UDim.new(0, 10)
 
 	local wrapstroke = Instance.new("UIStroke")
-	wrapstroke.Name = randomString(13)
 	wrapstroke.Color = border
 	wrapstroke.Thickness = 1
 	wrapstroke.Parent = wrap
 
 	local label = Instance.new("TextLabel")
-	label.Name = randomString(13)
 	label.Size = UDim2.new(0.65, 0, 1, 0)
 	label.Position = UDim2.new(0, 16, 0, 0)
 	label.BackgroundTransparency = 1
@@ -386,7 +365,6 @@ local function createtoggle(name, tab, callback)
 	label.Parent = wrap
 
 	local track = Instance.new("Frame")
-	track.Name = randomString(13)
 	track.Size = UDim2.new(0, 44, 0, 24)
 	track.Position = UDim2.new(1, -60, 0.5, -12)
 	track.BackgroundColor3 = Color3.fromRGB(38, 38, 48)
@@ -395,7 +373,6 @@ local function createtoggle(name, tab, callback)
 	Instance.new("UICorner", track).CornerRadius = UDim.new(1, 0)
 
 	local thumb = Instance.new("Frame")
-	thumb.Name = randomString(13)
 	thumb.Size = UDim2.new(0, 18, 0, 18)
 	thumb.Position = UDim2.new(0, 3, 0.5, -9)
 	thumb.BackgroundColor3 = Color3.fromRGB(160, 160, 175)
@@ -404,7 +381,6 @@ local function createtoggle(name, tab, callback)
 	Instance.new("UICorner", thumb).CornerRadius = UDim.new(1, 0)
 
 	local trackbtn = Instance.new("TextButton")
-	trackbtn.Name = randomString(13)
 	trackbtn.Size = UDim2.new(1, 0, 1, 0)
 	trackbtn.BackgroundTransparency = 1
 	trackbtn.Text = ""
@@ -464,11 +440,11 @@ local function loading()
 	_G.__opgui_loading = true
 
 	local loadgui = Instance.new("ScreenGui")
-	loadgui.Name = randomString(13)
+	loadgui.Name = randomstring(13)
 	loadgui.Parent = localplayer:WaitForChild("PlayerGui")
 
 	local frame = Instance.new("Frame")
-	frame.Name = randomString(13)
+	frame.Name = randomstring(13)
 	frame.Size = UDim2.new(0, 340, 0, 110)
 	frame.Position = UDim2.new(0.5, -170, 0.5, -55)
 	frame.BackgroundColor3 = surface
@@ -477,13 +453,11 @@ local function loading()
 	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 14)
 
 	local framestroke = Instance.new("UIStroke")
-	framestroke.Name = randomString(13)
 	framestroke.Color = border
 	framestroke.Thickness = 1
 	framestroke.Parent = frame
 
 	local loadlabel = Instance.new("TextLabel")
-	loadlabel.Name = randomString(13)
 	loadlabel.Size = UDim2.new(1, 0, 0, 40)
 	loadlabel.Position = UDim2.new(0, 0, 0, 22)
 	loadlabel.BackgroundTransparency = 1
@@ -493,7 +467,6 @@ local function loading()
 	loadlabel.Parent = frame
 
 	local progressbg = Instance.new("Frame")
-	progressbg.Name = randomString(13)
 	progressbg.Size = UDim2.new(0.78, 0, 0, 3)
 	progressbg.Position = UDim2.new(0.11, 0, 1, -22)
 	progressbg.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
@@ -502,7 +475,6 @@ local function loading()
 	Instance.new("UICorner", progressbg).CornerRadius = UDim.new(1, 0)
 
 	local progressfill = Instance.new("Frame")
-	progressfill.Name = randomString(13)
 	progressfill.Size = UDim2.new(0, 0, 1, 0)
 	progressfill.BackgroundColor3 = accent
 	progressfill.BorderSizePixel = 0
