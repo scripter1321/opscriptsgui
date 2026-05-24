@@ -11,10 +11,11 @@ A clean Roblox UI library made in Luau.
 - Draggable UI
 - Resizable UI
 - Scrollable tabs
-- Auto toggle callbacks
+- Invalid Tab Callbacks
 - Close button
 - Lightweight
 - Easy to customize
+- Loading
 
 ---
 
@@ -39,6 +40,20 @@ gui.CreateTitle("My Hub")
 ```
 
 Changes the topbar title.
+Arguments:
+
+| Argument | Type | Description |
+|---|---|---|
+| Name | string | Title Name |
+
+
+---
+
+# Loading Screen
+```lua
+gui.Loading()
+```
+Makes a clean loading screen that waits a bit to load
 
 ---
 
@@ -121,25 +136,24 @@ true / false
 local gui = loadstring(game:HttpGet(
 	"https://raw.githubusercontent.com/scripter1321/opscriptsgui/main/main.luau?nocache=" .. tick()
 ))()
-
+gui.Loading() -- gui.Loading() will create a nice loading gui, its a little buggy for now, but it works.
 gui.CreateTitle("Test")
-
-gui.CreateTab("Other") -- to create a tab, use CreateTab
--- Main tab is created automatically.
-
-gui.CreateToggle("Example Toggle", "Main", function(GetToggle)
+gui.CreateTab("Other") --  to create a tab, use CreateTab
+-- main tab is a starter tab, the script auto makes it.
+gui.CreateToggle("Example Toggle", "Main", function(GetToggle) -- first arg=Button name, second arg=tab name, third arg=function
 	while GetToggle() do
 		print("Example Toggle On")
 		task.wait(1)
 	end
 end)
-
-gui.CreateButton("Example Button", "Main", function()
+gui.CreateButton("Example Button", "Main", function() -- first arg=Button name, second arg=tab name, third arg=function
 	print("example button pressed")
 end)
-
 gui.CreateButton("Other Tab Button", "Other", function()
 	print("other tab button pressed")
+end)
+gui.CreateButton("Invalid Tab Button", "Invalid Tab", function() -- this is a fallback example. it will automattically make any tabs that arent made yet but are requested.
+	print("Invalid Tab Button Pressed")
 end)
 ```
 
