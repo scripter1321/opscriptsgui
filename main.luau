@@ -152,6 +152,9 @@ end
 
 local function CreateButton(BtnName, Tab, Callback)
 	local Page = Tabs[Tab]
+	if not Page then -- fallback if no tab is named the arg
+		Page = CreateTab(Tab)
+	end
 
 	local Button = Instance.new("TextButton")
 	Button.Size = UDim2.new(0,260,0,50)
@@ -190,6 +193,9 @@ end
 
 local function CreateToggle(Name, Tab, Callback)
 	local Page = Tabs[Tab]
+	if not Page then -- fallback if no tab is named the arg
+		Page = CreateTab(Tab)
+	end
 
 	local Enabled = false
 
@@ -279,6 +285,8 @@ local function GetToggle(Name)
 end
 
 local function Loading()
+	if _G.__OPGUI_LOADING_DONE then return end
+	_G.__OPGUI_LOADING_DONE = true
 	local Players = game:GetService("Players")
 	local LocalPlayer = Players.LocalPlayer
 
