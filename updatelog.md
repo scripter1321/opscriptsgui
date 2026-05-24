@@ -4,6 +4,7 @@
 
 --12:00--
 - Fix bugs with toggles.
+- Added Mobile Drag
 
 ---
 # 05/23/2026 (MM/DD/YYYY)
