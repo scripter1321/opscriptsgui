@@ -1,7 +1,7 @@
 local gui = loadstring(game:HttpGet(
 	"https://raw.githubusercontent.com/scripter1321/opscriptsgui/main/main.luau?nocache=" .. tick()
 ))()
-
+gui.Loading() -- gui.Loading() will create a nice loading gui, its a little buggy for now, but it works.
 gui.CreateTitle("Test")
 gui.CreateTab("Other") --  to create a tab, use CreateTab
 -- main tab is a starter tab, the script auto makes it.
