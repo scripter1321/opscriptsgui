@@ -417,7 +417,7 @@ local function createtoggle(name, tab, callback)
 		update()
 		if callback then
 			task.spawn(function()
-				callback(enabled, function() return enabled end)
+				callback(function() return enabled end)
 			end)
 		end
 	end)
@@ -500,30 +500,52 @@ end
 local dragging = false
 local dragstart
 local startpos
+local activetouchid = nil
+
+local function begindrag(pos)
+	dragging = true
+	dragstart = pos
+	startpos = main.Position
+end
+
+local function enddrag()
+	dragging = false
+	activetouchid = nil
+end
+
+local function movedrag(pos)
+	if not dragging then return end
+	local delta = pos - dragstart
+	local vp = workspace.CurrentCamera.ViewportSize
+	main.Position = UDim2.new(0,
+		math.clamp(startpos.X.Offset + delta.X, 0, vp.X - main.AbsoluteSize.X),
+		0,
+		math.clamp(startpos.Y.Offset + delta.Y, 0, vp.Y - main.AbsoluteSize.Y)
+	)
+end
 
 topbar.InputBegan:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		dragstart = input.Position
-		startpos = main.Position
+		begindrag(input.Position)
+	elseif input.UserInputType == Enum.UserInputType.Touch and not activetouchid then
+		activetouchid = input
+		begindrag(input.Position)
 	end
 end)
 
 uis.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = false
+		enddrag()
+	elseif input.UserInputType == Enum.UserInputType.Touch and input == activetouchid then
+		enddrag()
 	end
 end)
 
 uis.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-		local delta = input.Position - dragstart
-		local vp = workspace.CurrentCamera.ViewportSize
-		main.Position = UDim2.new(0,
-			math.clamp(startpos.X.Offset + delta.X, 0, vp.X - main.AbsoluteSize.X),
-			0,
-			math.clamp(startpos.Y.Offset + delta.Y, 0, vp.Y - main.AbsoluteSize.Y)
-		)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		movedrag(input.Position)
+	elseif input.UserInputType == Enum.UserInputType.Touch and input == activetouchid then
+		movedrag(input.Position)
 	end
 end)
 
