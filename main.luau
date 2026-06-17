@@ -719,7 +719,7 @@ local function createtoggle(name, tab, callback)
 	wrap.BorderSizePixel = 0
 	wrap.Parent = page
 	Instance.new("UICorner", wrap).CornerRadius = UDim.new(0, 10)
-	regadd("raised", wrap)\
+	regadd("raised", wrap)
 	wrap.AnchorPoint = Vector2.new(0.5,0)
 	wrap.Position = UDim2.new(0.5,0,0,0)
 
