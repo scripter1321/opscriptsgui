@@ -37,7 +37,9 @@ local function manualvertical(parent, padding, top)
 		local y = top
 
 		for _, child in ipairs(parent:GetChildren()) do
-			if child:IsA("GuiObject") and child.Visible then
+			if child:IsA("GuiObject") 
+				and child.Visible 
+				and not child:GetAttribute("IgnoreLayout") then
 				child.Position = UDim2.new(
 					child.Position.X.Scale,
 					child.Position.X.Offset,
