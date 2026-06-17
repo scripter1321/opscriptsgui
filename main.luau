@@ -30,9 +30,6 @@ local theme = {
 	thumboff      = Color3.fromRGB(155, 155, 170),
 }
 local function manualvertical(parent, padding, top)
-	if child:IsA("ScrollingFrame") then
-		continue
-	end
 	padding = padding or 10
 	top = top or 0
 
@@ -67,12 +64,6 @@ local function manualvertical(parent, padding, top)
 	end)
 
 	parent.ChildRemoved:Connect(update)
-
-	for _, c in ipairs(parent:GetChildren()) do
-		if c:IsA("GuiObject") then
-			c:GetPropertyChangedSignal("AbsoluteSize"):Connect(update)
-		end
-	end
 
 	update()
 
