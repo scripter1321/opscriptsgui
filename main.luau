@@ -378,11 +378,6 @@ sideborder.Parent = main
 regadd("border", sideborder)
 
 manualvertical(sidebar, 4, 14)
-
-local sidepadding = Instance.new("UIPadding")
-sidepadding.PaddingTop = UDim.new(0, 14)
-sidepadding.Parent = sidebar
-
 local content = Instance.new("Frame")
 content.Name = randomstring(13)
 content.Size = UDim2.new(1, -148, 1, -52)
