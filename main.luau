@@ -29,6 +29,83 @@ local theme = {
 	trackoff      = Color3.fromRGB(38, 38, 48),
 	thumboff      = Color3.fromRGB(155, 155, 170),
 }
+local function manualvertical(parent, padding, top)
+	padding = padding or 10
+	top = top or 0
+
+	local function update()
+		local y = top
+
+		for _, child in ipairs(parent:GetChildren()) do
+			if child:IsA("GuiObject") and child.Visible then
+				child.Position = UDim2.new(
+					child.Position.X.Scale,
+					child.Position.X.Offset,
+					0,
+					y
+				)
+
+				y += child.AbsoluteSize.Y + padding
+			end
+		end
+
+		if parent:IsA("ScrollingFrame") then
+			parent.CanvasSize = UDim2.new(
+				0,
+				0,
+				0,
+				y + padding
+			)
+		end
+	end
+
+	parent.ChildAdded:Connect(function()
+		task.defer(update)
+	end)
+
+	parent.ChildRemoved:Connect(update)
+
+	for _, c in ipairs(parent:GetChildren()) do
+		if c:IsA("GuiObject") then
+			c:GetPropertyChangedSignal("AbsoluteSize"):Connect(update)
+		end
+	end
+
+	update()
+
+	return update
+end
+
+
+local function manualhorizontal(parent, padding)
+	padding = padding or 10
+
+	local function update()
+		local x = 0
+
+		for _, child in ipairs(parent:GetChildren()) do
+			if child:IsA("GuiObject") and child.Visible then
+
+				child.Position = UDim2.new(
+					0,
+					x,
+					child.Position.Y.Scale,
+					child.Position.Y.Offset
+				)
+
+				x += child.AbsoluteSize.X + padding
+			end
+		end
+	end
+
+	parent.ChildAdded:Connect(function()
+		task.defer(update)
+	end)
+
+	update()
+
+	return update
+end
 
 local themelist = {
 	{
@@ -300,11 +377,7 @@ sideborder.BorderSizePixel = 0
 sideborder.Parent = main
 regadd("border", sideborder)
 
-local sidelayout = Instance.new("UIListLayout")
-sidelayout.Padding = UDim.new(0, 4)
-sidelayout.SortOrder = Enum.SortOrder.LayoutOrder
-sidelayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-sidelayout.Parent = sidebar
+manualvertical(sidebar, 4, 14)
 
 local sidepadding = Instance.new("UIPadding")
 sidepadding.PaddingTop = UDim.new(0, 14)
@@ -362,13 +435,7 @@ swatchrow.BackgroundTransparency = 1
 swatchrow.ZIndex = 11
 swatchrow.Parent = settingspanel
 
-local swatchlayout = Instance.new("UIListLayout")
-swatchlayout.FillDirection = Enum.FillDirection.Horizontal
-swatchlayout.Padding = UDim.new(0, 10)
-swatchlayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
-swatchlayout.VerticalAlignment = Enum.VerticalAlignment.Center
-swatchlayout.SortOrder = Enum.SortOrder.LayoutOrder
-swatchlayout.Parent = swatchrow
+manualhorizontal(swatchrow, 10)
 
 local swatchselectors = {}
 
@@ -513,18 +580,7 @@ local function createtab(name)
 	page.Parent = content
 	regadd("accent", page, "ScrollBarImageColor3")
 
-	local layout = Instance.new("UIListLayout")
-	layout.Padding = UDim.new(0, 10)
-	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-	layout.Parent = page
-
-	local pagepadding = Instance.new("UIPadding")
-	pagepadding.PaddingTop = UDim.new(0, 18)
-	pagepadding.Parent = page
-
-	layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-		page.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 25)
-	end)
+	manualvertical(page, 10, 18)
 
 	tabs[name] = page
 
@@ -590,6 +646,8 @@ local function createbutton(btnname, tab, callback)
 	wrap.Parent = page
 	Instance.new("UICorner", wrap).CornerRadius = UDim.new(0, 10)
 	regadd("raised", wrap)
+	wrap.AnchorPoint = Vector2.new(0.5,0)
+	wrap.Position = UDim2.new(0.5,0,0,0)
 
 	local wrapstroke = Instance.new("UIStroke")
 	wrapstroke.Color = theme.border
@@ -661,7 +719,9 @@ local function createtoggle(name, tab, callback)
 	wrap.BorderSizePixel = 0
 	wrap.Parent = page
 	Instance.new("UICorner", wrap).CornerRadius = UDim.new(0, 10)
-	regadd("raised", wrap)
+	regadd("raised", wrap)\
+	wrap.AnchorPoint = Vector2.new(0.5,0)
+	wrap.Position = UDim2.new(0.5,0,0,0)
 
 	local wrapstroke = Instance.new("UIStroke")
 	wrapstroke.Color = theme.border
