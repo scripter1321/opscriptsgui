@@ -30,6 +30,9 @@ local theme = {
 	thumboff      = Color3.fromRGB(155, 155, 170),
 }
 local function manualvertical(parent, padding, top)
+	if child:IsA("ScrollingFrame") then
+		continue
+	end
 	padding = padding or 10
 	top = top or 0
 
