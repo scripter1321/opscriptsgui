@@ -1,8 +1,16 @@
+# 6/21/2027
+---
+
+- Add GameID Checks, so you can easily lock the gui to a certain game.
+
+---
+
+--3:24 AM CST--
 # 05/24/2026 (MM/DD/YYYY)
 
 ---
 
---12:00--
+--12:00 AM CST--
 - Fix bugs with toggles.
 - Added Mobile Drag
 
