@@ -922,6 +922,19 @@ uis.InputChanged:Connect(function(input)
 		movedrag(input.Position)
 	end
 end)
+local function hardcodegame(id)
+	if game.PlaceId ~= id then
+		settitle("Wrong Game")
+
+		createbutton(
+			"You have entered the wrong game.",
+			"Main",
+			function() end
+		)
+
+		error(("Wrong Game (Expected %d, Got %d)"):format(id, game.PlaceId))
+	end
+end
 
 return {
 	CreateTitle = settitle,
@@ -929,5 +942,6 @@ return {
 	CreateButton = createbutton,
 	CreateToggle = createtoggle,
 	GetToggle = gettoggle,
-	Loading = loading
+	Loading = loading,
+	HardcodeGame = hardcodegame
 }
