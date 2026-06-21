@@ -943,5 +943,5 @@ return {
 	CreateToggle = createtoggle,
 	GetToggle = gettoggle,
 	Loading = loading,
-	HardcodeGame = hardcodegame
+	lockgameid = hardcodegame
 }
