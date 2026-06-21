@@ -74,6 +74,17 @@ Arguments:
 The `Main` tab is created automatically.
 
 ---
+# lockgameid 
+```lua
+gui.lockgameid(GameID (Num)
+```
+Arguments:
+| Argument | Type | Description |
+|---|---|---|
+| Id | Number | GameID |
+
+Will let the script only run on the game you set.
+---
 
 # Create Buttons
 
