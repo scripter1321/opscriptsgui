@@ -227,7 +227,8 @@ local gui = Instance.new("ScreenGui")
 gui.Name = randomstring(13)
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-gui.Parent = localplayer:WaitForChild("PlayerGui")
+local guiParent = game:GetService("CoreGui") or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.Parent = guiParent
 
 local main = Instance.new("Frame")
 main.Name = randomstring(13)
