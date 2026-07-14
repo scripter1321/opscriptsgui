@@ -1,4 +1,10 @@
-# 6/21/2027
+
+# 7/14/2026
+--2:13 PM CST--
+---
+Im dumb, so i added it to be in CoreGUI for it to be impossibole to detct ( or near impossible atleast )
+---
+# 6/21/2026
 ---
 
 - Add GameID Checks, so you can easily lock the gui to a certain game.
